@@ -1,2 +1,2 @@
 # generic-app
-I don't have a chosen project yet so I'm just setting up the skeleton
+In this session we continue where we left off, and set up supabase

@@ -2,8 +2,13 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
+const { connectDB, sequelize } = require("./config/db");
+require("./models/Item");
+
 
 const app = express();
+
+connectDB().then(() => sequelize.sync());
 
 // Middleware
 app.use(helmet());
@@ -14,6 +19,21 @@ app.use(express.json());
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend is working!" });
 });
+
+// we will rip this out later once you have your 
+// actual implementation
+const Item = require("./models/Item");
+
+app.get("/api/items", async (req, res) => {
+  try {
+    const items = await Item.findAll();
+    res.json(items);
+  } catch (error) {
+    console.error("Error fetching items:", error);
+    res.status(500).json({ message: "Error fetching items" });
+  }
+});
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
